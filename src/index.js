@@ -13,15 +13,19 @@ function searchCountry(city) {
     return fetch(`${BASE_URL}name/${city}`).then(
       response => {
         if (!response.ok) {
-          throw new Error(response.status);
+            throw new Error(response.status);
         }
+        console.log("object");
         return response.json();
       }
     ).then( response => {
+        console.log("object1");
         console.log(response)
       })
   }
   refs.inputSearchRef.addEventListener('input',debounce((event)=>{
-    searchCountry(event.target.value)
+    searchCountry(event.target.value).then(
+        console.log(" succes")
+    ).catch(()=>{console.log(" erorr");})
   },300))
  
