@@ -1,5 +1,6 @@
 import './css/styles.css';
-var debounce = require('lodash.debounce');
+import debounce from 'lodash.debounce'
+import Notiflix from 'notiflix';
 const refs={
     inputSearchRef: document.querySelector('#search-box'),
     listCountryRef: document.querySelector('.country-list'),
@@ -9,23 +10,47 @@ const refs={
 
 const DEBOUNCE_DELAY = 300;
 const BASE_URL="https://restcountries.com/v3.1/"
-function searchCountry(city) {
-    return fetch(`${BASE_URL}name/${city}`).then(
+function fetchCountry(country) {
+    console.log("country",country);
+    console.log(`${BASE_URL}name/${country}`)
+    return fetch(`${BASE_URL}name/${country}`).then(
       response => {
+        console.log(response.ok);
         if (!response.ok) {
             throw new Error(response.status);
         }
-        console.log("object");
         return response.json();
-      }
-    ).then( response => {
-        console.log("object1");
-        console.log(response)
       })
   }
-  refs.inputSearchRef.addEventListener('input',debounce((event)=>{
-    searchCountry(event.target.value).then(
-        console.log(" succes")
-    ).catch(()=>{console.log(" erorr");})
-  },300))
- 
+  refs.inputSearchRef.addEventListener('input',debounce(searchCountry,DEBOUNCE_DELAY))
+   
+  function searchCountry(event){
+    const inputCountry=event.target.value;
+console.log(inputCountry);
+fetchCountry(event.target.value).then().then(onSucces
+    ).catch(onError)
+  }
+  function onError(){
+    Notiflix.Notify.failure("Oops, there is no country with that name");
+    
+  }
+  function onSucces(array){
+
+    console.log(array.length, "dsfgsfwsesf");
+    if (array.length>10){
+        Notiflix.Notify.info("Too many matches found. Please enter a more specific name.");
+    }
+    else{
+    createMarkup(array)
+    }
+  }
+  function createMarkup(array)
+  {
+    console.log("uyi");
+    if(array.length>1){
+        console.log("object");
+    }
+    else{
+        console.log("erorr");
+    }
+  }
