@@ -27,9 +27,6 @@ export class SearchCountry {
   }
   OnError() {
     this.ClearPage();
-    this.refs.inputSearchRef.value
-      ? Notiflix.Notify.failure('Oops, there is no country with that name')
-      : Notiflix.Notify.warning('Enter text');
   }
   onSucces(arr) {
     if (arr.length > 10) {
